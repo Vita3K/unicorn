@@ -141,8 +141,10 @@ MACOS_UNIVERSAL ?= no
 
 ifeq ($(UNICORN_DEBUG),yes)
 CFLAGS += -g
+UNICORN_CFLAGS += -g
 else
 CFLAGS += -O3
+UNICORN_CFLAGS += -O3
 UNICORN_QEMU_FLAGS += --disable-debug-info
 endif
 

@@ -128,6 +128,7 @@ case "$1" in
   "macos-universal-no" ) MACOS_UNIVERSAL=no ${MAKE};;
   "cross-win32" ) build_cross i686-w64-mingw32;;
   "cross-win64" ) build_cross x86_64-w64-mingw32;;
+  "build_cross" ) build_cross $2;;
   "cross-android_arm" ) CROSS=arm-linux-androideabi ${MAKE};;
   "cross-android_arm64" ) CROSS=aarch64-linux-android ${MAKE};;
   "linux32" ) build_linux32;;
