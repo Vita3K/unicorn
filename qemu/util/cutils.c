@@ -26,7 +26,6 @@
 #include "qemu/host-utils.h"
 #include "qemu/cutils.h"
 #include <math.h>
-#include <sys/mman.h>
 
 #include "uc_priv.h"
 
