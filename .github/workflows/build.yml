@@ -1,0 +1,56 @@
+name: C/C++ CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: c:\msys64\usr\bin\env MSYSTEM=MINGW64 c:\msys64\usr\bin\bash -lc "UNICORN_ARCHS=arm ./make.sh cross-win64"
+        env:
+          HOME: ${{ runner.workspace }}/unicorn
+          CI: ON
+      - name: Copy files
+        run: |
+          mkdir unicorn
+          mkdir unicorn\lib
+          Xcopy /E /I include unicorn\include
+          copy unicorn.lib unicorn\lib\unicorn.lib
+          copy unicorn.dll unicorn\lib\unicorn.dll
+          copy c:\msys64\mingw64\bin\libgcc_s_seh-1.dll unicorn\lib\libgcc_s_seh-1.dll
+          copy c:\msys64\mingw64\bin\libwinpthread-1.dll unicorn\lib\libwinpthread-1.dll
+        env:
+          HOME: ${{ runner.workspace }}/unicorn
+          CI: ON
+      - name: Zip Folder
+        run: 7z a vita3k-unicorn.zip unicorn
+        env:
+          HOME: ${{ runner.workspace }}/unicorn
+      - uses: benjlevesque/short-sha@v1.1
+        id: short-sha
+        with:
+          length: 8
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.short-sha.outputs.sha }}
+          release_name: Unicorn ${{ steps.short-sha.outputs.sha }}
+          body: |
+            Automated build for windows
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./vita3k-unicorn.zip
+          asset_name: vita3k-unicorn.zip
+          asset_content_type: application/zip

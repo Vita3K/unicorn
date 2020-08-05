@@ -32,12 +32,18 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\15.0
 )
 :break
 
-if "%appdir%"=="" (
-    echo Could not find an installed visual studio version. Abandoning windows static lib export operation.
-) else (
-    :: Add the Visual Studio binaries to our path and run the linker
-    call "%appdir%..\..\VC\vcvarsall.bat" %1
+
+if not "%CI%" == "" (
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %1
     call lib /machine:%1 /def:unicorn.def
+) else (
+    if "%appdir%"=="" (
+        cho Could not find an installed visual studio version. Abandoning windows static lib export operation.
+    ) else (
+        :: Add the Visual Studio binaries to our path and run the linker
+        call "%appdir%..\..\VC\vcvarsall.bat" %1
+        call lib /machine:%1 /def:unicorn.def
+    )
 )
 
 exit /b 0
