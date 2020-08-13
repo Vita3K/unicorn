@@ -98,6 +98,9 @@ int arm_reg_read(struct uc_struct *uc, unsigned int *regs, void **vals, int coun
                 case UC_ARM_REG_FPEXC:
                     *(int32_t *)value = ARM_CPU(uc, mycpu)->env.vfp.xregs[ARM_VFP_FPEXC];
                     break;
+                case UC_ARM_REG_FPSCR:
+                    *(int32_t *)value = vfp_get_fpscr(&ARM_CPU(uc, mycpu)->env);
+                    break;
                 case UC_ARM_REG_IPSR:
                     *(uint32_t *)value = xpsr_read(&ARM_CPU(uc, mycpu)->env) & 0x1ff;
                     break;
@@ -165,6 +168,9 @@ int arm_reg_write(struct uc_struct *uc, unsigned int *regs, void* const* vals, i
 
                 case UC_ARM_REG_C13_C0_3:
                     ARM_CPU(uc, mycpu)->env.cp15.tpidrro_el0 = *(int32_t *)value;
+                    break;
+                case UC_ARM_REG_FPSCR:
+                    vfp_set_fpscr(&ARM_CPU(uc, mycpu)->env, *(int32_t *)value);
                     break;
                 case UC_ARM_REG_FPEXC:
                     ARM_CPU(uc, mycpu)->env.vfp.xregs[ARM_VFP_FPEXC] = *(int32_t *)value;
