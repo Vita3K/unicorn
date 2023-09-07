@@ -448,56 +448,56 @@ set(UNICORN_ARCH_COMMON
     qemu/accel/tcg/translator.c
 )
 
-if(UNICORN_HAS_X86)
-add_library(x86_64-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/hw/i386/x86.c
-
-    qemu/target/i386/arch_memory_mapping.c
-    qemu/target/i386/bpt_helper.c
-    qemu/target/i386/cc_helper.c
-    qemu/target/i386/cpu.c
-    qemu/target/i386/excp_helper.c
-    qemu/target/i386/fpu_helper.c
-    qemu/target/i386/helper.c
-    qemu/target/i386/int_helper.c
-    qemu/target/i386/machine.c
-    qemu/target/i386/mem_helper.c
-    qemu/target/i386/misc_helper.c
-    qemu/target/i386/mpx_helper.c
-    qemu/target/i386/seg_helper.c
-    qemu/target/i386/smm_helper.c
-    qemu/target/i386/svm_helper.c
-    qemu/target/i386/translate.c
-    qemu/target/i386/xsave_helper.c
-    qemu/target/i386/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(x86_64-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIx86_64.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/x86_64-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/i386
-    )
-else()
-    target_compile_options(x86_64-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include x86_64.h
-        -I${CMAKE_BINARY_DIR}/x86_64-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/i386
-    )
-
-    # Log and pow
-    target_link_libraries(x86_64-softmmu PRIVATE m)
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(x86_64-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
+# if(UNICORN_HAS_X86)
+# add_library(x86_64-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/hw/i386/x86.c
+# 
+#     qemu/target/i386/arch_memory_mapping.c
+#     qemu/target/i386/bpt_helper.c
+#     qemu/target/i386/cc_helper.c
+#     qemu/target/i386/cpu.c
+#     qemu/target/i386/excp_helper.c
+#     qemu/target/i386/fpu_helper.c
+#     qemu/target/i386/helper.c
+#     qemu/target/i386/int_helper.c
+#     qemu/target/i386/machine.c
+#     qemu/target/i386/mem_helper.c
+#     qemu/target/i386/misc_helper.c
+#     qemu/target/i386/mpx_helper.c
+#     qemu/target/i386/seg_helper.c
+#     qemu/target/i386/smm_helper.c
+#     qemu/target/i386/svm_helper.c
+#     qemu/target/i386/translate.c
+#     qemu/target/i386/xsave_helper.c
+#     qemu/target/i386/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(x86_64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIx86_64.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/x86_64-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/i386
+#     )
+# else()
+#     target_compile_options(x86_64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include x86_64.h
+#         -I${CMAKE_BINARY_DIR}/x86_64-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/i386
+#     )
+# 
+#     # Log and pow
+#     target_link_libraries(x86_64-softmmu PRIVATE m)
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(x86_64-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
 
 if(UNICORN_HAS_ARM)
 add_library(arm-softmmu STATIC
@@ -541,558 +541,558 @@ endif()
 
 endif()
 
-if(UNICORN_HAS_AARCH64)
-add_library(aarch64-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/arm/cpu64.c
-    qemu/target/arm/cpu.c
-    qemu/target/arm/crypto_helper.c
-    qemu/target/arm/debug_helper.c
-    qemu/target/arm/helper-a64.c
-    qemu/target/arm/helper.c
-    qemu/target/arm/iwmmxt_helper.c
-    qemu/target/arm/m_helper.c
-    qemu/target/arm/neon_helper.c
-    qemu/target/arm/op_helper.c
-    qemu/target/arm/pauth_helper.c
-    qemu/target/arm/psci.c
-    qemu/target/arm/sve_helper.c
-    qemu/target/arm/tlb_helper.c
-    qemu/target/arm/translate-a64.c
-    qemu/target/arm/translate.c
-    qemu/target/arm/translate-sve.c
-    qemu/target/arm/vec_helper.c
-    qemu/target/arm/vfp_helper.c
-    qemu/target/arm/unicorn_aarch64.c
-)
-
-if(MSVC)
-    target_compile_options(aarch64-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIaarch64.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/aarch64-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/arm
-    )
-else()
-    target_compile_options(aarch64-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include aarch64.h
-        -I${CMAKE_BINARY_DIR}/aarch64-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/arm
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(aarch64-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
-
-if(UNICORN_HAS_M68K)
-add_library(m68k-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/m68k/cpu.c
-    qemu/target/m68k/fpu_helper.c
-    qemu/target/m68k/helper.c
-    qemu/target/m68k/op_helper.c
-    qemu/target/m68k/softfloat.c
-    qemu/target/m68k/translate.c
-    qemu/target/m68k/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(m68k-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIm68k.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/m68k-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/m68k
-    )
-else()
-    target_compile_options(m68k-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include m68k.h
-        -I${CMAKE_BINARY_DIR}/m68k-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/m68k
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(m68k-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
-
-if(UNICORN_HAS_MIPS)
-add_library(mips-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/mips/cp0_helper.c
-    qemu/target/mips/cp0_timer.c
-    qemu/target/mips/cpu.c
-    qemu/target/mips/dsp_helper.c
-    qemu/target/mips/fpu_helper.c
-    qemu/target/mips/helper.c
-    qemu/target/mips/lmi_helper.c
-    qemu/target/mips/msa_helper.c
-    qemu/target/mips/op_helper.c
-    qemu/target/mips/translate.c
-    qemu/target/mips/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(mips-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FImips.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mips-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-else()
-    target_compile_options(mips-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include mips.h
-        -I${CMAKE_BINARY_DIR}/mips-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(mips-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-add_library(mipsel-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/mips/cp0_helper.c
-    qemu/target/mips/cp0_timer.c
-    qemu/target/mips/cpu.c
-    qemu/target/mips/dsp_helper.c
-    qemu/target/mips/fpu_helper.c
-    qemu/target/mips/helper.c
-    qemu/target/mips/lmi_helper.c
-    qemu/target/mips/msa_helper.c
-    qemu/target/mips/op_helper.c
-    qemu/target/mips/translate.c
-    qemu/target/mips/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(mipsel-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FImipsel.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mipsel-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-else()
-    target_compile_options(mipsel-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include mipsel.h
-        -I${CMAKE_BINARY_DIR}/mipsel-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(mipsel-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-add_library(mips64-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/mips/cp0_helper.c
-    qemu/target/mips/cp0_timer.c
-    qemu/target/mips/cpu.c
-    qemu/target/mips/dsp_helper.c
-    qemu/target/mips/fpu_helper.c
-    qemu/target/mips/helper.c
-    qemu/target/mips/lmi_helper.c
-    qemu/target/mips/msa_helper.c
-    qemu/target/mips/op_helper.c
-    qemu/target/mips/translate.c
-    qemu/target/mips/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(mips64-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FImips64.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mips64-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-else()
-    target_compile_options(mips64-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include mips64.h
-        -I${CMAKE_BINARY_DIR}/mips64-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(mips64-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-add_library(mips64el-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/mips/cp0_helper.c
-    qemu/target/mips/cp0_timer.c
-    qemu/target/mips/cpu.c
-    qemu/target/mips/dsp_helper.c
-    qemu/target/mips/fpu_helper.c
-    qemu/target/mips/helper.c
-    qemu/target/mips/lmi_helper.c
-    qemu/target/mips/msa_helper.c
-    qemu/target/mips/op_helper.c
-    qemu/target/mips/translate.c
-    qemu/target/mips/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(mips64el-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FImips64el.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mips64el-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-else()
-    target_compile_options(mips64el-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include mips64el.h
-        -I${CMAKE_BINARY_DIR}/mips64el-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(mips64el-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
-
-if(UNICORN_HAS_SPARC)
-add_library(sparc-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/sparc/cc_helper.c
-    qemu/target/sparc/cpu.c
-    qemu/target/sparc/fop_helper.c
-    qemu/target/sparc/helper.c
-    qemu/target/sparc/int32_helper.c
-    qemu/target/sparc/ldst_helper.c
-    qemu/target/sparc/mmu_helper.c
-    qemu/target/sparc/translate.c
-    qemu/target/sparc/win_helper.c
-    qemu/target/sparc/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(sparc-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIsparc.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/sparc-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
-    )
-else()
-    target_compile_options(sparc-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include sparc.h
-        -I${CMAKE_BINARY_DIR}/sparc-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(sparc-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-add_library(sparc64-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/sparc/cc_helper.c
-    qemu/target/sparc/cpu.c
-    qemu/target/sparc/fop_helper.c
-    qemu/target/sparc/helper.c
-    qemu/target/sparc/int64_helper.c
-    qemu/target/sparc/ldst_helper.c
-    qemu/target/sparc/mmu_helper.c
-    qemu/target/sparc/translate.c
-    qemu/target/sparc/vis_helper.c
-    qemu/target/sparc/win_helper.c
-    qemu/target/sparc/unicorn64.c
-)
-
-if(MSVC)
-    target_compile_options(sparc64-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIsparc64.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/sparc64-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
-    )
-else()
-    target_compile_options(sparc64-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include sparc64.h
-        -I${CMAKE_BINARY_DIR}/sparc64-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(sparc64-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
-
-if(UNICORN_HAS_PPC)
-add_library(ppc-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/hw/ppc/ppc.c
-    qemu/hw/ppc/ppc_booke.c
-
-    qemu/libdecnumber/decContext.c
-    qemu/libdecnumber/decNumber.c
-    qemu/libdecnumber/dpd/decimal128.c
-    qemu/libdecnumber/dpd/decimal32.c
-    qemu/libdecnumber/dpd/decimal64.c
-
-    qemu/target/ppc/cpu.c
-    qemu/target/ppc/cpu-models.c
-    qemu/target/ppc/dfp_helper.c
-    qemu/target/ppc/excp_helper.c
-    qemu/target/ppc/fpu_helper.c
-    qemu/target/ppc/int_helper.c
-    qemu/target/ppc/machine.c
-    qemu/target/ppc/mem_helper.c
-    qemu/target/ppc/misc_helper.c
-    qemu/target/ppc/mmu-hash32.c
-    qemu/target/ppc/mmu_helper.c
-    qemu/target/ppc/timebase_helper.c
-    qemu/target/ppc/translate.c
-    qemu/target/ppc/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(ppc-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIppc.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/ppc-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
-    )
-else()
-    target_compile_options(ppc-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include ppc.h
-        -I${CMAKE_BINARY_DIR}/ppc-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(ppc-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-add_library(ppc64-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/hw/ppc/ppc.c
-    qemu/hw/ppc/ppc_booke.c
-
-    qemu/libdecnumber/decContext.c
-    qemu/libdecnumber/decNumber.c
-    qemu/libdecnumber/dpd/decimal128.c
-    qemu/libdecnumber/dpd/decimal32.c
-    qemu/libdecnumber/dpd/decimal64.c
-
-    qemu/target/ppc/compat.c
-    qemu/target/ppc/cpu.c
-    qemu/target/ppc/cpu-models.c
-    qemu/target/ppc/dfp_helper.c
-    qemu/target/ppc/excp_helper.c
-    qemu/target/ppc/fpu_helper.c
-    qemu/target/ppc/int_helper.c
-    qemu/target/ppc/machine.c
-    qemu/target/ppc/mem_helper.c
-    qemu/target/ppc/misc_helper.c
-    qemu/target/ppc/mmu-book3s-v3.c
-    qemu/target/ppc/mmu-hash32.c
-    qemu/target/ppc/mmu-hash64.c
-    qemu/target/ppc/mmu_helper.c
-    qemu/target/ppc/mmu-radix64.c
-    qemu/target/ppc/timebase_helper.c
-    qemu/target/ppc/translate.c
-    qemu/target/ppc/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(ppc64-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIppc64.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/ppc64-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
-    )
-else()
-    target_compile_options(ppc64-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include ppc64.h
-        -I${CMAKE_BINARY_DIR}/ppc64-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(ppc64-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
-
-if(UNICORN_HAS_RISCV)
-add_library(riscv32-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/riscv/cpu.c
-    qemu/target/riscv/cpu_helper.c
-    qemu/target/riscv/csr.c
-    qemu/target/riscv/fpu_helper.c
-    qemu/target/riscv/op_helper.c
-    qemu/target/riscv/pmp.c
-    qemu/target/riscv/translate.c
-    qemu/target/riscv/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(riscv32-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIriscv32.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/riscv32-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
-    )
-else()
-    target_compile_options(riscv32-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include riscv32.h
-        -I${CMAKE_BINARY_DIR}/riscv32-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(riscv32-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-add_library(riscv64-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/riscv/cpu.c
-    qemu/target/riscv/cpu_helper.c
-    qemu/target/riscv/csr.c
-    qemu/target/riscv/fpu_helper.c
-    qemu/target/riscv/op_helper.c
-    qemu/target/riscv/pmp.c
-    qemu/target/riscv/translate.c
-    qemu/target/riscv/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(riscv64-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIriscv64.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/riscv64-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
-    )
-else()
-    target_compile_options(riscv64-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include riscv64.h
-        -I${CMAKE_BINARY_DIR}/riscv64-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
-    )
-endif()
-
-if(UNICORN_TRACER)
-    target_compile_options(riscv64-softmmu PRIVATE -DUNICORN_TRACER)
-endif()
-
-endif()
-
-if (UNICORN_HAS_S390X)
-add_library(s390x-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/hw/s390x/s390-skeys.c
-
-    qemu/target/s390x/cc_helper.c
-    qemu/target/s390x/cpu.c
-    qemu/target/s390x/cpu_features.c
-    qemu/target/s390x/cpu_models.c
-    qemu/target/s390x/crypto_helper.c
-    qemu/target/s390x/excp_helper.c
-    qemu/target/s390x/fpu_helper.c
-    qemu/target/s390x/helper.c
-    qemu/target/s390x/interrupt.c
-    qemu/target/s390x/int_helper.c
-    qemu/target/s390x/ioinst.c
-    qemu/target/s390x/mem_helper.c
-    qemu/target/s390x/misc_helper.c
-    qemu/target/s390x/mmu_helper.c
-    qemu/target/s390x/sigp.c
-    qemu/target/s390x/tcg-stub.c
-    qemu/target/s390x/translate.c
-    qemu/target/s390x/vec_fpu_helper.c
-    qemu/target/s390x/vec_helper.c
-    qemu/target/s390x/vec_int_helper.c
-    qemu/target/s390x/vec_string_helper.c
-    qemu/target/s390x/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(s390x-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FIs390x.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/s390x-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/s390x
-    )
-else()
-    target_compile_options(s390x-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include s390x.h
-        -I${CMAKE_BINARY_DIR}/s390x-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/s390x
-    )
-endif()
-endif()
-
-
-if (UNICORN_HAS_TRICORE)
-add_library(tricore-softmmu STATIC
-    ${UNICORN_ARCH_COMMON}
-
-    qemu/target/tricore/cpu.c
-    qemu/target/tricore/fpu_helper.c
-    qemu/target/tricore/helper.c
-    qemu/target/tricore/op_helper.c
-    qemu/target/tricore/translate.c
-    qemu/target/tricore/unicorn.c
-)
-
-if(MSVC)
-    target_compile_options(tricore-softmmu PRIVATE
-        -DNEED_CPU_H
-        /FItricore.h
-        /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/tricore-softmmu
-        /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/tricore
-    )
-else()
-    target_compile_options(tricore-softmmu PRIVATE
-        -DNEED_CPU_H
-        -include tricore.h
-        -I${CMAKE_BINARY_DIR}/tricore-softmmu
-        -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/tricore
-    )
-endif()
-endif()
+# if(UNICORN_HAS_AARCH64)
+# add_library(aarch64-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/arm/cpu64.c
+#     qemu/target/arm/cpu.c
+#     qemu/target/arm/crypto_helper.c
+#     qemu/target/arm/debug_helper.c
+#     qemu/target/arm/helper-a64.c
+#     qemu/target/arm/helper.c
+#     qemu/target/arm/iwmmxt_helper.c
+#     qemu/target/arm/m_helper.c
+#     qemu/target/arm/neon_helper.c
+#     qemu/target/arm/op_helper.c
+#     qemu/target/arm/pauth_helper.c
+#     qemu/target/arm/psci.c
+#     qemu/target/arm/sve_helper.c
+#     qemu/target/arm/tlb_helper.c
+#     qemu/target/arm/translate-a64.c
+#     qemu/target/arm/translate.c
+#     qemu/target/arm/translate-sve.c
+#     qemu/target/arm/vec_helper.c
+#     qemu/target/arm/vfp_helper.c
+#     qemu/target/arm/unicorn_aarch64.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(aarch64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIaarch64.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/aarch64-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/arm
+#     )
+# else()
+#     target_compile_options(aarch64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include aarch64.h
+#         -I${CMAKE_BINARY_DIR}/aarch64-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/arm
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(aarch64-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
+# 
+# if(UNICORN_HAS_M68K)
+# add_library(m68k-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/m68k/cpu.c
+#     qemu/target/m68k/fpu_helper.c
+#     qemu/target/m68k/helper.c
+#     qemu/target/m68k/op_helper.c
+#     qemu/target/m68k/softfloat.c
+#     qemu/target/m68k/translate.c
+#     qemu/target/m68k/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(m68k-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIm68k.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/m68k-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/m68k
+#     )
+# else()
+#     target_compile_options(m68k-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include m68k.h
+#         -I${CMAKE_BINARY_DIR}/m68k-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/m68k
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(m68k-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
+# 
+# if(UNICORN_HAS_MIPS)
+# add_library(mips-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/mips/cp0_helper.c
+#     qemu/target/mips/cp0_timer.c
+#     qemu/target/mips/cpu.c
+#     qemu/target/mips/dsp_helper.c
+#     qemu/target/mips/fpu_helper.c
+#     qemu/target/mips/helper.c
+#     qemu/target/mips/lmi_helper.c
+#     qemu/target/mips/msa_helper.c
+#     qemu/target/mips/op_helper.c
+#     qemu/target/mips/translate.c
+#     qemu/target/mips/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(mips-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FImips.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mips-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# else()
+#     target_compile_options(mips-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include mips.h
+#         -I${CMAKE_BINARY_DIR}/mips-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(mips-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# add_library(mipsel-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/mips/cp0_helper.c
+#     qemu/target/mips/cp0_timer.c
+#     qemu/target/mips/cpu.c
+#     qemu/target/mips/dsp_helper.c
+#     qemu/target/mips/fpu_helper.c
+#     qemu/target/mips/helper.c
+#     qemu/target/mips/lmi_helper.c
+#     qemu/target/mips/msa_helper.c
+#     qemu/target/mips/op_helper.c
+#     qemu/target/mips/translate.c
+#     qemu/target/mips/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(mipsel-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FImipsel.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mipsel-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# else()
+#     target_compile_options(mipsel-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include mipsel.h
+#         -I${CMAKE_BINARY_DIR}/mipsel-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(mipsel-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# add_library(mips64-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/mips/cp0_helper.c
+#     qemu/target/mips/cp0_timer.c
+#     qemu/target/mips/cpu.c
+#     qemu/target/mips/dsp_helper.c
+#     qemu/target/mips/fpu_helper.c
+#     qemu/target/mips/helper.c
+#     qemu/target/mips/lmi_helper.c
+#     qemu/target/mips/msa_helper.c
+#     qemu/target/mips/op_helper.c
+#     qemu/target/mips/translate.c
+#     qemu/target/mips/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(mips64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FImips64.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mips64-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# else()
+#     target_compile_options(mips64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include mips64.h
+#         -I${CMAKE_BINARY_DIR}/mips64-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(mips64-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# add_library(mips64el-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/mips/cp0_helper.c
+#     qemu/target/mips/cp0_timer.c
+#     qemu/target/mips/cpu.c
+#     qemu/target/mips/dsp_helper.c
+#     qemu/target/mips/fpu_helper.c
+#     qemu/target/mips/helper.c
+#     qemu/target/mips/lmi_helper.c
+#     qemu/target/mips/msa_helper.c
+#     qemu/target/mips/op_helper.c
+#     qemu/target/mips/translate.c
+#     qemu/target/mips/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(mips64el-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FImips64el.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/mips64el-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# else()
+#     target_compile_options(mips64el-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include mips64el.h
+#         -I${CMAKE_BINARY_DIR}/mips64el-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/mips
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(mips64el-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
+# 
+# if(UNICORN_HAS_SPARC)
+# add_library(sparc-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/sparc/cc_helper.c
+#     qemu/target/sparc/cpu.c
+#     qemu/target/sparc/fop_helper.c
+#     qemu/target/sparc/helper.c
+#     qemu/target/sparc/int32_helper.c
+#     qemu/target/sparc/ldst_helper.c
+#     qemu/target/sparc/mmu_helper.c
+#     qemu/target/sparc/translate.c
+#     qemu/target/sparc/win_helper.c
+#     qemu/target/sparc/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(sparc-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIsparc.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/sparc-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
+#     )
+# else()
+#     target_compile_options(sparc-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include sparc.h
+#         -I${CMAKE_BINARY_DIR}/sparc-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(sparc-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# add_library(sparc64-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/sparc/cc_helper.c
+#     qemu/target/sparc/cpu.c
+#     qemu/target/sparc/fop_helper.c
+#     qemu/target/sparc/helper.c
+#     qemu/target/sparc/int64_helper.c
+#     qemu/target/sparc/ldst_helper.c
+#     qemu/target/sparc/mmu_helper.c
+#     qemu/target/sparc/translate.c
+#     qemu/target/sparc/vis_helper.c
+#     qemu/target/sparc/win_helper.c
+#     qemu/target/sparc/unicorn64.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(sparc64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIsparc64.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/sparc64-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
+#     )
+# else()
+#     target_compile_options(sparc64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include sparc64.h
+#         -I${CMAKE_BINARY_DIR}/sparc64-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/sparc
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(sparc64-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
+# 
+# if(UNICORN_HAS_PPC)
+# add_library(ppc-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/hw/ppc/ppc.c
+#     qemu/hw/ppc/ppc_booke.c
+# 
+#     qemu/libdecnumber/decContext.c
+#     qemu/libdecnumber/decNumber.c
+#     qemu/libdecnumber/dpd/decimal128.c
+#     qemu/libdecnumber/dpd/decimal32.c
+#     qemu/libdecnumber/dpd/decimal64.c
+# 
+#     qemu/target/ppc/cpu.c
+#     qemu/target/ppc/cpu-models.c
+#     qemu/target/ppc/dfp_helper.c
+#     qemu/target/ppc/excp_helper.c
+#     qemu/target/ppc/fpu_helper.c
+#     qemu/target/ppc/int_helper.c
+#     qemu/target/ppc/machine.c
+#     qemu/target/ppc/mem_helper.c
+#     qemu/target/ppc/misc_helper.c
+#     qemu/target/ppc/mmu-hash32.c
+#     qemu/target/ppc/mmu_helper.c
+#     qemu/target/ppc/timebase_helper.c
+#     qemu/target/ppc/translate.c
+#     qemu/target/ppc/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(ppc-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIppc.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/ppc-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
+#     )
+# else()
+#     target_compile_options(ppc-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include ppc.h
+#         -I${CMAKE_BINARY_DIR}/ppc-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(ppc-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# add_library(ppc64-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/hw/ppc/ppc.c
+#     qemu/hw/ppc/ppc_booke.c
+# 
+#     qemu/libdecnumber/decContext.c
+#     qemu/libdecnumber/decNumber.c
+#     qemu/libdecnumber/dpd/decimal128.c
+#     qemu/libdecnumber/dpd/decimal32.c
+#     qemu/libdecnumber/dpd/decimal64.c
+# 
+#     qemu/target/ppc/compat.c
+#     qemu/target/ppc/cpu.c
+#     qemu/target/ppc/cpu-models.c
+#     qemu/target/ppc/dfp_helper.c
+#     qemu/target/ppc/excp_helper.c
+#     qemu/target/ppc/fpu_helper.c
+#     qemu/target/ppc/int_helper.c
+#     qemu/target/ppc/machine.c
+#     qemu/target/ppc/mem_helper.c
+#     qemu/target/ppc/misc_helper.c
+#     qemu/target/ppc/mmu-book3s-v3.c
+#     qemu/target/ppc/mmu-hash32.c
+#     qemu/target/ppc/mmu-hash64.c
+#     qemu/target/ppc/mmu_helper.c
+#     qemu/target/ppc/mmu-radix64.c
+#     qemu/target/ppc/timebase_helper.c
+#     qemu/target/ppc/translate.c
+#     qemu/target/ppc/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(ppc64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIppc64.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/ppc64-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
+#     )
+# else()
+#     target_compile_options(ppc64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include ppc64.h
+#         -I${CMAKE_BINARY_DIR}/ppc64-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/ppc
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(ppc64-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
+# 
+# if(UNICORN_HAS_RISCV)
+# add_library(riscv32-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/riscv/cpu.c
+#     qemu/target/riscv/cpu_helper.c
+#     qemu/target/riscv/csr.c
+#     qemu/target/riscv/fpu_helper.c
+#     qemu/target/riscv/op_helper.c
+#     qemu/target/riscv/pmp.c
+#     qemu/target/riscv/translate.c
+#     qemu/target/riscv/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(riscv32-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIriscv32.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/riscv32-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
+#     )
+# else()
+#     target_compile_options(riscv32-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include riscv32.h
+#         -I${CMAKE_BINARY_DIR}/riscv32-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(riscv32-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# add_library(riscv64-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/riscv/cpu.c
+#     qemu/target/riscv/cpu_helper.c
+#     qemu/target/riscv/csr.c
+#     qemu/target/riscv/fpu_helper.c
+#     qemu/target/riscv/op_helper.c
+#     qemu/target/riscv/pmp.c
+#     qemu/target/riscv/translate.c
+#     qemu/target/riscv/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(riscv64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIriscv64.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/riscv64-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
+#     )
+# else()
+#     target_compile_options(riscv64-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include riscv64.h
+#         -I${CMAKE_BINARY_DIR}/riscv64-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/riscv
+#     )
+# endif()
+# 
+# if(UNICORN_TRACER)
+#     target_compile_options(riscv64-softmmu PRIVATE -DUNICORN_TRACER)
+# endif()
+# 
+# endif()
+# 
+# if (UNICORN_HAS_S390X)
+# add_library(s390x-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/hw/s390x/s390-skeys.c
+# 
+#     qemu/target/s390x/cc_helper.c
+#     qemu/target/s390x/cpu.c
+#     qemu/target/s390x/cpu_features.c
+#     qemu/target/s390x/cpu_models.c
+#     qemu/target/s390x/crypto_helper.c
+#     qemu/target/s390x/excp_helper.c
+#     qemu/target/s390x/fpu_helper.c
+#     qemu/target/s390x/helper.c
+#     qemu/target/s390x/interrupt.c
+#     qemu/target/s390x/int_helper.c
+#     qemu/target/s390x/ioinst.c
+#     qemu/target/s390x/mem_helper.c
+#     qemu/target/s390x/misc_helper.c
+#     qemu/target/s390x/mmu_helper.c
+#     qemu/target/s390x/sigp.c
+#     qemu/target/s390x/tcg-stub.c
+#     qemu/target/s390x/translate.c
+#     qemu/target/s390x/vec_fpu_helper.c
+#     qemu/target/s390x/vec_helper.c
+#     qemu/target/s390x/vec_int_helper.c
+#     qemu/target/s390x/vec_string_helper.c
+#     qemu/target/s390x/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(s390x-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FIs390x.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/s390x-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/s390x
+#     )
+# else()
+#     target_compile_options(s390x-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include s390x.h
+#         -I${CMAKE_BINARY_DIR}/s390x-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/s390x
+#     )
+# endif()
+# endif()
+# 
+# 
+# if (UNICORN_HAS_TRICORE)
+# add_library(tricore-softmmu STATIC
+#     ${UNICORN_ARCH_COMMON}
+# 
+#     qemu/target/tricore/cpu.c
+#     qemu/target/tricore/fpu_helper.c
+#     qemu/target/tricore/helper.c
+#     qemu/target/tricore/op_helper.c
+#     qemu/target/tricore/translate.c
+#     qemu/target/tricore/unicorn.c
+# )
+# 
+# if(MSVC)
+#     target_compile_options(tricore-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         /FItricore.h
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/msvc/tricore-softmmu
+#         /I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/tricore
+#     )
+# else()
+#     target_compile_options(tricore-softmmu PRIVATE
+#         -DNEED_CPU_H
+#         -include tricore.h
+#         -I${CMAKE_BINARY_DIR}/tricore-softmmu
+#         -I${CMAKE_CURRENT_SOURCE_DIR}/qemu/target/tricore
+#     )
+# endif()
+# endif()
 
 
 set(UNICORN_SRCS
@@ -1185,13 +1185,13 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} unicorn-common)
-if(UNICORN_HAS_X86)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_X86)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} x86_64-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_x86 sample_x86_32_gdt_and_seg_regs sample_batch_reg mem_apis shellcode)
-    target_link_libraries(x86_64-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_x86)
-endif()
+# #if(UNICORN_HAS_X86)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_X86)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} x86_64-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_x86 sample_x86_32_gdt_and_seg_regs sample_batch_reg mem_apis shellcode)
+#     target_link_libraries(x86_64-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_x86)
+# endif()
 if(UNICORN_HAS_ARM)
     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_ARM)
     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} arm-softmmu)
@@ -1199,68 +1199,68 @@ if(UNICORN_HAS_ARM)
     target_link_libraries(arm-softmmu PRIVATE unicorn-common)
     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_arm)
 endif()
-if(UNICORN_HAS_AARCH64)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_ARM64)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} aarch64-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_arm64)
-    target_link_libraries(aarch64-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_arm64)
-endif()
-if(UNICORN_HAS_M68K)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_M68K)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} m68k-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_m68k)
-    target_link_libraries(m68k-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_m68k)
-endif()
-if(UNICORN_HAS_MIPS)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_MIPS -DUNICORN_HAS_MIPSEL -DUNICORN_HAS_MIPS64 -DUNICORN_HAS_MIPS64EL)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_mips)
-    target_link_libraries(mips-softmmu PRIVATE unicorn-common)
-    target_link_libraries(mipsel-softmmu PRIVATE unicorn-common)
-    target_link_libraries(mips64-softmmu PRIVATE unicorn-common)
-    target_link_libraries(mips64el-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_mips)
-endif()
-if(UNICORN_HAS_SPARC)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_SPARC)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} sparc-softmmu sparc64-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_sparc)
-    target_link_libraries(sparc-softmmu PRIVATE unicorn-common)
-    target_link_libraries(sparc64-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_sparc)
-endif()
-if(UNICORN_HAS_PPC)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_PPC)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} ppc-softmmu ppc64-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_ppc)
-    target_link_libraries(ppc-softmmu PRIVATE unicorn-common)
-    target_link_libraries(ppc64-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_ppc)
-endif()
-if(UNICORN_HAS_RISCV)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_RISCV)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} riscv32-softmmu riscv64-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_riscv)
-    target_link_libraries(riscv32-softmmu PRIVATE unicorn-common)
-    target_link_libraries(riscv64-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_riscv)
-endif()
-if (UNICORN_HAS_S390X)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_S390X)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} s390x-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_s390x)
-    target_link_libraries(s390x-softmmu PRIVATE unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_s390x)
-endif()
-if (UNICORN_HAS_TRICORE)
-    set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_TRICORE)
-    set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} tricore-softmmu)
-    set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_tricore)
-    target_link_libraries(tricore-softmmu unicorn-common)
-    set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_tricore)
-endif()
+# if(UNICORN_HAS_AARCH64)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_ARM64)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} aarch64-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_arm64)
+#     target_link_libraries(aarch64-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_arm64)
+# endif()
+# if(UNICORN_HAS_M68K)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_M68K)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} m68k-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_m68k)
+#     target_link_libraries(m68k-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_m68k)
+# endif()
+# if(UNICORN_HAS_MIPS)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_MIPS -DUNICORN_HAS_MIPSEL -DUNICORN_HAS_MIPS64 -DUNICORN_HAS_MIPS64EL)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_mips)
+#     target_link_libraries(mips-softmmu PRIVATE unicorn-common)
+#     target_link_libraries(mipsel-softmmu PRIVATE unicorn-common)
+#     target_link_libraries(mips64-softmmu PRIVATE unicorn-common)
+#     target_link_libraries(mips64el-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_mips)
+# endif()
+# if(UNICORN_HAS_SPARC)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_SPARC)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} sparc-softmmu sparc64-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_sparc)
+#     target_link_libraries(sparc-softmmu PRIVATE unicorn-common)
+#     target_link_libraries(sparc64-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_sparc)
+# endif()
+# if(UNICORN_HAS_PPC)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_PPC)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} ppc-softmmu ppc64-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_ppc)
+#     target_link_libraries(ppc-softmmu PRIVATE unicorn-common)
+#     target_link_libraries(ppc64-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_ppc)
+# endif()
+# if(UNICORN_HAS_RISCV)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_RISCV)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} riscv32-softmmu riscv64-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_riscv)
+#     target_link_libraries(riscv32-softmmu PRIVATE unicorn-common)
+#     target_link_libraries(riscv64-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_riscv)
+# endif()
+# if (UNICORN_HAS_S390X)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_S390X)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} s390x-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_s390x)
+#     target_link_libraries(s390x-softmmu PRIVATE unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_s390x)
+# endif()
+# if (UNICORN_HAS_TRICORE)
+#     set(UNICORN_COMPILE_OPTIONS ${UNICORN_COMPILE_OPTIONS} -DUNICORN_HAS_TRICORE)
+#     set(UNICORN_LINK_LIBRARIES ${UNICORN_LINK_LIBRARIES} tricore-softmmu)
+#     set(UNICORN_SAMPLE_FILE ${UNICORN_SAMPLE_FILE} sample_tricore)
+#     target_link_libraries(tricore-softmmu unicorn-common)
+#     set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_tricore)
+# endif()
 
 # Extra tests
 set(UNICORN_TEST_FILE ${UNICORN_TEST_FILE} test_mem)
@@ -1275,6 +1275,8 @@ endif()
 target_compile_options(unicorn-common PRIVATE
     ${UNICORN_COMPILE_OPTIONS}
 )
+# necessary to prevent the redefinition of the symbol crc32 on some compilers
+target_compile_definitions(unicorn-common PRIVATE crc32=uc_crc32 gen_helper_crc32=gen_helper_uc_crc32)
 
 target_compile_options(unicorn PRIVATE
     ${UNICORN_COMPILE_OPTIONS}
@@ -1369,17 +1371,18 @@ if (BUILD_SHARED_LIBS)
 endif()
 
 # Black magic for generating static archives...
-if (BUILD_SHARED_LIBS)
-    if (MSVC)
-        # Avoid the import lib built by MVSC clash with our archive.
-        set_target_properties(unicorn PROPERTIES ARCHIVE_OUTPUT_NAME "unicorn-import")
-    endif()
-    bundle_static_library(unicorn_static unicorn_archive unicorn)
-else()
-    # Rename the "static" lib to avoid filename clash.
-    set_target_properties(unicorn PROPERTIES OUTPUT_NAME "unicorn-static")
-    bundle_static_library(unicorn unicorn_archive unicorn)
-endif()
+# Macdu: I don't like black magic, even more when it doesn't work
+# if (BUILD_SHARED_LIBS)
+#     if (MSVC)
+#         # Avoid the import lib built by MVSC clash with our archive.
+#         set_target_properties(unicorn PROPERTIES ARCHIVE_OUTPUT_NAME "unicorn-import")
+#     endif()
+#     bundle_static_library(unicorn_static unicorn_archive unicorn)
+# else()
+#     # Rename the "static" lib to avoid filename clash.
+#     set_target_properties(unicorn PROPERTIES OUTPUT_NAME "unicorn-static")
+#     bundle_static_library(unicorn unicorn_archive unicorn)
+# endif()
 
 if(UNICORN_FUZZ)
     set(UNICORN_FUZZ_SUFFIX "arm_arm;arm_armbe;arm_thumb;arm64_arm;arm64_armbe;m68k_be;mips_32be;mips_32le;sparc_32be;x86_16;x86_32;x86_64;s390x_be")
