@@ -1137,7 +1137,7 @@ set(UNICORN_COMMON_SRCS
 )
 
 # A workaround to avoid circle dependency between unicorn and *-softmmu
-if(MSVC)
+if(WIN32)
     set(UNICORN_COMMON_SRCS
         ${UNICORN_COMMON_SRCS}
         qemu/util/oslib-win32.c
@@ -1152,6 +1152,10 @@ if(MSVC)
             set(UNICORN_SRCS ${UNICORN_SRCS} "${CMAKE_CURRENT_SOURCE_DIR}/build/setjmp-wrapper-win32.dir/setjmp-wrapper-win32.obj")
         else()
             enable_language(ASM_MASM)
+        endif()
+        if(MINGW)
+            set(CMAKE_ASM_MASM_COMPILER "jwasm")
+            set(CMAKE_ASM_MASM_FLAGS "-nologo -W3 -win64")
         endif()
         set(UNICORN_COMMON_SRCS ${UNICORN_COMMON_SRCS} qemu/util/setjmp-wrapper-win32.asm)
         set_property(SOURCE qemu/util/setjmp-wrapper-win32.asm PROPERTY LANGUAGE ASM_MASM)
@@ -1276,7 +1280,9 @@ target_compile_options(unicorn-common PRIVATE
     ${UNICORN_COMPILE_OPTIONS}
 )
 # necessary to prevent the redefinition of the symbol crc32 on some compilers
-target_compile_definitions(unicorn-common PRIVATE crc32=uc_crc32 gen_helper_crc32=gen_helper_uc_crc32)
+if(NOT MINGW OR NOT CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    target_compile_definitions(unicorn-common PRIVATE crc32=uc_crc32 gen_helper_crc32=gen_helper_uc_crc32)
+endif()
 
 target_compile_options(unicorn PRIVATE
     ${UNICORN_COMPILE_OPTIONS}

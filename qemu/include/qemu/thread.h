@@ -7,7 +7,7 @@
 struct uc_struct;
 typedef struct QemuThread QemuThread;
 
-#if defined(_WIN32) && !defined(__MINGW32__)
+#if defined(_WIN32)
 #include "qemu/thread-win32.h"
 #else
 #include "qemu/thread-posix.h"
